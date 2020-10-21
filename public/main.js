@@ -48,10 +48,10 @@ function redirect(e){
 			document.cookie = "site="+"https://www."+link+"; path=/";
 			temp_link = "https://www."+link+"/"+res;
 		} else {
-			temp_link = res[0]+"//www."+res[2];
+			temp_link = res[0]+"//www."+res[2]+"/";
 			document.cookie = "site="+temp_link+"; path=/";
 		}
-		socket.emit('link', link);
+		socket.emit('link', [temp_link, id]);
 	} else {
 		window.location.href = link;
 	}
@@ -60,6 +60,7 @@ function redirect(e){
 window.onbeforeunload = function() {
     sessionStorage.setItem("cache", JSON.stringify(cache));
     sessionStorage.setItem("id", id);
+    socket.emit('disconnect');
 }
 
 function lookupTable(url){

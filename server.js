@@ -7,7 +7,7 @@ var iconv  = require('iconv-lite');
 var total_users = 0;
 
 var socketlist = [];
-//[socket, ["nrk.no", "google.com"], id]
+//[socket, ["nrk.no", "google.com"], id, online]
 
 const request = require('request');
 app.use(express.static(__dirname+'/public'));
@@ -22,11 +22,17 @@ io.on('connection', function(socket) {
 	socket.on('identify', function(data){
 		if(data == 0 || parseInt(data) > total_users){
 			total_users++;
-			socketlist.push([socket, [], total_users.toString()]);
+			socketlist.push([socket, [], total_users.toString(), true]);
 			socket.emit("id", total_users.toString());
 			return;
 		}
 		updateTable(data, socket);
+	});
+	socket.on('disconnect', function(data){
+		var i = findSocket(socket);
+		if(socketlist[i] != undefined){
+			socketlist[i][3] = false;
+		}
 	});
     socket.on('link', function(data){
     	var find = lookupTable(data[0]);
@@ -72,15 +78,17 @@ function updateTable(data, socket){
 	for (var i = socketlist.length - 1; i >= 0; i--) {
 		if(socketlist[i][2] == data){
 			socketlist[i][0] = socket;
+			socketlist[i][3] = true; 
 			return;
 		}
 	}
 }
 
 function lookupTable(link){
+	console.log(socketlist.length);
 	for (var i = socketlist.length - 1; i >= 0; i--) {
 		for (var j = socketlist[i][1].length - 1; j >= 0; j--) {
-			if(socketlist[i][1].includes(link)){
+			if(socketlist[i][1].includes(link) && socketlist[i][3]){
 				return i;
 			}
 		}
@@ -88,4 +96,4 @@ function lookupTable(link){
 	return null;
 }
 
-server.listen(5000, '127.0.0.1');
+server.listen(5000, '192.168.1.4');

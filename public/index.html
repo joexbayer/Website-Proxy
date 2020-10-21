@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="/style.css">
+	<title>Proxy</title>
+	<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div class="main-container">
+		<div class="inputs">
+			<h2 style="color:white;">Online Proxy</h2>
+			<input autocomplete="off" id="url" type="url" name="URL" placeholder="link...">
+			<button style="font-size: 20px;margin-top: 1.5%;" onclick="submit()">Connect</button>
+			<p style="color:white;">This connection is not secure!</p>
+		</div>
+		<div id="frame" class="frame">
+			<img style="right: 45%;top:50%;position: absolute;" src="https://media.tenor.com/images/892127eea7203c2c88299ac28d44988b/tenor.gif">
+		</div>
+	</div>
+	<script type="text/javascript" src="/main.js"></script>
+</body>
+</html>

@@ -84,7 +84,7 @@ function submit() {
 		var input_link = "https://www."+input_link;
 		var table = lookupTable(input_link);
 		if(table != null){
-			document.getElementById("frame").innerHTML = window.atob(cache[table][1]);
+			filter(window.atob(cache[table][1]));
 			return;
 		}
 		socket.emit('link', [input_link, id]);
@@ -93,7 +93,7 @@ function submit() {
 		document.cookie = "site="+input_link+"; path=/";
 		var table = lookupTable(og_link);
 		if(table != null){
-			document.getElementById("frame").innerHTML = window.atob(cache[table][1]);
+			filter(window.atob(cache[table][1]));
 			return;
 		}
 		socket.emit('link', [og_link, id]);
@@ -111,13 +111,10 @@ socket.on('get-cache', function(data){
     socket.emit("cache-reponse", [window.atob(cache[table][1]), data[1], cache[table][2]]);
 });
 
-socket.on('html-data', function(data){
+function filter(msg){
 	input_link = document.cookie;
-	if(data[1] != null){
-		cache.push([data[1][0], window.btoa(data[0]), data[2]]);
-	}
 	var res = input_link.split("=");	
-	var filtered = data[0].replaceAll('src="/', 'src="'+res[1].split(";")[0]+'/');
+	var filtered = msg.replaceAll('src="/', 'src="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('href="/', 'href="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('<a href="'+res[1].split(";")[0], '<a href="http://' + document.domain + ':' + location.port);
 	if(res[1].split(";")[0].includes("google")){
@@ -125,4 +122,11 @@ socket.on('html-data', function(data){
 		filtered = filtered.replaceAll('src="http://' + document.domain + ':' + location.port, 'src="'+res[1].split(";")[0]+'/');
 	}
 	document.getElementById("frame").innerHTML = filtered;
+}
+
+socket.on('html-data', function(data){
+	if(data[1] != null){
+		cache.push([data[1][0], window.btoa(data[0]), data[2]]);
+	}
+	filter(data[0]);
 });

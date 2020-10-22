@@ -108,7 +108,7 @@ socket.on("id", function(data){
 socket.on('get-cache', function(data){
     var table = lookupTable(data[0]);
     console.log("getting cache for "+data[0]);
-    socket.emit("cache-reponse", [window.atob(cache[table][1]), data[1]]);
+    socket.emit("cache-reponse", [window.atob(cache[table][1]), data[1], cache[table][2]]);
 });
 
 socket.on('html-data', function(data){
@@ -117,10 +117,8 @@ socket.on('html-data', function(data){
 	var filtered = data[0].replaceAll('src="/', 'src="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('href="/', 'href="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('<a href="'+res[1].split(";")[0], '<a href="http://' + document.domain + ':' + location.port);
-	console.log(data);
-	console.log(data[2]);
 	if(data[1] != null){
-		cache.push([data[1][0], window.btoa(filtered)]);
+		cache.push([data[1][0], window.btoa(filtered), data[2]]);
 	}
 	document.getElementById("frame").innerHTML = filtered;
 });

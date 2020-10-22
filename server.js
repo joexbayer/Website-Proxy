@@ -62,6 +62,8 @@ io.on('connection', function(socket) {
 				socketlist[findID(data[1])][1].push(data[0]);
 				var hmac = crypto.createHmac('sha1', key).update(utf8String).digest('hex');
 				socket.emit('html-data', [utf8String, data, hmac]);
+			} else {
+				console.log(error);
 			}
 			console.log('statusCode:', response && response.statusCode);
 		});

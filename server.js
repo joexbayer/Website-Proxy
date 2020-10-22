@@ -5,8 +5,7 @@ var io = require('socket.io')(server);
 var iconv  = require('iconv-lite');
 var crypto = require('crypto');
 
-var key = "123456789ABCDEF";
-var tet = Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 4);
+var key = Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 4);
 
 console.log("Session HMAC key: "+key);
 

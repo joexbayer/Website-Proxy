@@ -117,6 +117,8 @@ socket.on('html-data', function(data){
 	var filtered = data[0].replaceAll('src="/', 'src="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('href="/', 'href="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('<a href="'+res[1].split(";")[0], '<a href="http://' + document.domain + ':' + location.port);
+	console.log(data);
+	console.log(data[2]);
 	if(data[1] != null){
 		cache.push([data[1][0], window.btoa(filtered)]);
 	}

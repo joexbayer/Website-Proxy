@@ -113,12 +113,12 @@ socket.on('get-cache', function(data){
 
 socket.on('html-data', function(data){
 	input_link = document.cookie;
+	if(data[1] != null){
+		cache.push([data[1][0], window.btoa(data[0]), data[2]]);
+	}
 	var res = input_link.split("=");	
 	var filtered = data[0].replaceAll('src="/', 'src="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('href="/', 'href="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('<a href="'+res[1].split(";")[0], '<a href="http://' + document.domain + ':' + location.port);
-	if(data[1] != null){
-		cache.push([data[1][0], window.btoa(filtered), data[2]]);
-	}
 	document.getElementById("frame").innerHTML = filtered;
 });

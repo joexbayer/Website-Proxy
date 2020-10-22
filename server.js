@@ -70,8 +70,6 @@ io.on('connection', function(socket) {
 		if(request_log.includes(data[1])){
 			var soc = socketlist[data[1]][0];
 			var hmac = crypto.createHmac('sha1', key).update(data[0]).digest('hex');
-			console.log(hmac);
-			console.log(data[2]);
 			console.log(hmac == data[2]);
 			if(hmac == data[2]){
 				soc.emit('html-data', [data[0], null]);

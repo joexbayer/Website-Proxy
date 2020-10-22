@@ -120,5 +120,9 @@ socket.on('html-data', function(data){
 	var filtered = data[0].replaceAll('src="/', 'src="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('href="/', 'href="'+res[1].split(";")[0]+'/');
 	filtered = filtered.replaceAll('<a href="'+res[1].split(";")[0], '<a href="http://' + document.domain + ':' + location.port);
+	if(res[1].split(";")[0].includes("google")){
+		filtered = filtered.replaceAll(res[1].split(";")[0], 'http://' + document.domain + ':' + location.port);
+		filtered = filtered.replaceAll('src="http://' + document.domain + ':' + location.port, 'src="'+res[1].split(";")[0]+'/');
+	}
 	document.getElementById("frame").innerHTML = filtered;
 });

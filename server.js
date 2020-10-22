@@ -96,4 +96,4 @@ function lookupTable(link){
 	return null;
 }
 
-server.listen(5000, '192.168.1.4');
+server.listen(5000);
